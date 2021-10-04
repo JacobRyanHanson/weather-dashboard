@@ -1,0 +1,50 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    color: white;
+    background-image: linear-gradient(to right, #3b6cc2, #200b60);
+}
+
+main {
+    display: flex;
+}
+main div {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.city-search {
+    width: 25%;
+}
+
+.search-for-city {
+    width: 100%;
+}
+
+form {
+    width: 100%;
+}
+
+form > * {
+    width: 100%;
+}
+
+.overview > * {
+    width: 100%;
+}
+
+.display {
+    width: 75%;
+}
+
+.display > * {
+    width: 100%;
+}
+
