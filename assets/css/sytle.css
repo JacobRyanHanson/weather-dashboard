@@ -15,6 +15,7 @@ header {
 main {
     display: flex;
 }
+
 main div {
     display: flex;
     flex-wrap: wrap;
@@ -32,11 +33,7 @@ form {
     width: 100%;
 }
 
-form > * {
-    width: 100%;
-}
-
-.overview > * {
+form>* {
     width: 100%;
 }
 
@@ -44,7 +41,32 @@ form > * {
     width: 75%;
 }
 
-.display > * {
+.display>* {
     width: 100%;
 }
 
+.overview {
+    border: 1px solid black;
+}
+
+.overview>* {
+    width: 100%;
+
+}
+
+.uv-index span {
+    display: inline-block;
+    width: 20px;
+    text-align: center;
+    border-radius: 50%;
+    color: white;
+    background: green;
+}
+
+.five-day-forcast h3 {
+    width: 100%;
+}
+
+[data-id="0"] {
+    background: lightblue;
+}
