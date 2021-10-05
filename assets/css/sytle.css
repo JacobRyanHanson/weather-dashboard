@@ -56,17 +56,41 @@ form>* {
 .overview img {
     height: 27px;
     border-radius: 50%;
-    background:black;
+    background: lightblue;
 }
 
 
 .uvi span {
     display: inline-block;
-    width: 20px;
+    padding: 2px;
+    border-radius: 5px;
     text-align: center;
-    border-radius: 50%;
     color: white;
-    background: green;
+}
+
+.low {
+    background: #289500;
+    
+}
+
+.moderate {
+    background: #f7e400;
+    color: black !important;
+}
+
+.high {
+    background: #f85900;
+    color: white;
+}
+
+.very-high {
+    background: #d80010;
+    color: white;
+}
+
+.extreme {
+    background: #6b49c8;
+    color: white;
 }
 
 .five-day-forcast h3 {
