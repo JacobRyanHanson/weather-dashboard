@@ -1,10 +1,9 @@
-
 //TODO: Flex Format Weather Cards
-//TODO: Add Search History (Make it autosearch on click)
-//TODO: Fix UVI Color Coding
+//TODO: Make Search History autosearch on click)
 
-var form = document.querySelector("#id-city-form");
-var cityInput = document.querySelector("#city-input");
+var citySearch = document.querySelector(".city-search");
+var form = document.querySelector(".city-form");
+var cityInput = document.querySelector(".city-input");
 
 var overview = document.querySelector(".overview");
 
@@ -59,12 +58,15 @@ var weatherCards = [{
     }
 ]
 
+var searchHistory;
+loadHistory();
+
 form.addEventListener("submit", formSubmitHandler);
+citySearch.addEventListener("click", searchHistoryHandler);
 
 function formSubmitHandler(event) {
     event.preventDefault();
     var input = cityInput.value
-
     geocode(input);
 }
 
@@ -72,8 +74,14 @@ function geocode(input) {
     var url = "http://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=1&appid=2739206277a259e4144072cd50bda376"
     fetch(url).then(function (response) {
         response.json().then(function (data) {
-            getForcast(data[0].name, data[0].lat, data[0].lon);
+            if (data.length > 0) {
+                getForcast(data[0].name.trim(), data[0].lat, data[0].lon);
+            } else {
+                alert("Error: City Not Found");
+            }
         });
+    }).catch(function () {
+        alert("Unable to connect to OpenWeather");
     });
 }
 
@@ -82,9 +90,47 @@ function getForcast(location, latitude, longitude) {
         "&units=imperial&exclude=hourly,minutely&appid=2739206277a259e4144072cd50bda376"
     fetch(url).then(function (response) {
         response.json().then(function (data) {
+            addToSearchHistory(location);
             displayData(location, data);
         });
+    }).catch(function () {
+        alert("Unable to connect to OpenWeather");
     });
+}
+
+function addToSearchHistory(location) {
+    var city = "";
+    var array = location.split(" ");
+    for (var i = 0; i < array.length; i++) {
+        array[i] = array[i].substring(0, 1).toUpperCase() + array[i].substring(1, array[i].length).toLowerCase();
+        city += array[i] + " ";
+    }
+    
+    if (!alreadyExists(city)) {
+        searchHistory.push(city);   
+    }
+
+    var searchHistoryContainer = document.createElement("h3");
+    searchHistoryContainer.textContent = city;
+    citySearch.appendChild(searchHistoryContainer);
+    
+    if (searchHistory.length > 2) {
+        searchHistory.shift();
+        citySearch.removeChild(citySearch.childNodes[5]);
+        
+    }
+
+    saveHistory();
+}
+
+function alreadyExists(city) {
+    var isInArray = false;
+    for (var i = 0; i < searchHistory.length; i++) {
+        if (city === searchHistory[i]) {
+            isInArray = true;
+        }
+    }
+    return isInArray;
 }
 
 function displayData(location, data) {
@@ -130,5 +176,21 @@ function addUviBackground(uvIndex) {
         weatherCards[0].uvi.classList.add("very-high");
     } else {
         weatherCards[0].uvi.classList.add("extreme");
+    }
+}
+
+function saveHistory() {
+    localStorage.setItem("searchHistory", JSON.stringify(searchHistory));
+}
+
+function loadHistory() {
+    searchHistory = JSON.parse(localStorage.getItem("searchHistory"));
+    if (!searchHistory) {
+        searchHistory = [];
+        return false;
+    }
+
+    for (var i = 0; i < searchHistory.length; i++) {
+        addToSearchHistory(searchHistory[i]);
     }
 }
