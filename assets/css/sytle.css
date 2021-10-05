@@ -49,12 +49,18 @@ form>* {
     border: 1px solid black;
 }
 
-.overview>* {
+.overview p {
     width: 100%;
-
 }
 
-.uv-index span {
+.overview img {
+    height: 27px;
+    border-radius: 50%;
+    background:black;
+}
+
+
+.uvi span {
     display: inline-block;
     width: 20px;
     text-align: center;
