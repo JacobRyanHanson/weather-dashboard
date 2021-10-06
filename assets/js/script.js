@@ -1,11 +1,16 @@
-//TODO: Flex Format Weather Cards
-//TODO: Make Search History autosearch on click)
+//TODO: Flex Format Weather Cards & STYLE
 
 var citySearch = document.querySelector(".city-search");
 var form = document.querySelector(".city-form");
 var cityInput = document.querySelector(".city-input");
 
 var overview = document.querySelector(".overview");
+var cityName = overview.querySelector(".city-name");
+var weatherIcon = overview.querySelector(".weather-icon");
+var temp = overview.querySelector(".temp span");
+var wind = overview.querySelector(".wind span");
+var humidity = overview.querySelector(".humidity span");
+var uvi = overview.querySelector(".uvi span");
 
 var card0 = document.querySelector("div[data-id='0']");
 var card1 = document.querySelector("div[data-id='1']");
@@ -14,52 +19,46 @@ var card3 = document.querySelector("div[data-id='3']");
 var card4 = document.querySelector("div[data-id='4']");
 
 var weatherCards = [{
-        date: overview.querySelector(".date"),
-        weatherIcon: overview.querySelector(".weather-icon"),
-        temp: overview.querySelector(".temp"),
-        wind: overview.querySelector(".wind"),
-        humidity: overview.querySelector(".humidity"),
-        uvi: overview.querySelector(".uvi span")
-    },
-    {
         date: card0.querySelector(".date"),
         weatherIcon: card0.querySelector(".weather-icon"),
-        temp: card0.querySelector(".temp"),
-        wind: card0.querySelector(".wind"),
-        humidity: card0.querySelector(".humidity")
+        temp: card0.querySelector(".temp span"),
+        wind: card0.querySelector(".wind span"),
+        humidity: card0.querySelector(".humidity span")
     },
     {
         date: card1.querySelector(".date"),
         weatherIcon: card1.querySelector(".weather-icon"),
-        temp: card1.querySelector(".temp"),
-        wind: card1.querySelector(".wind"),
-        humidity: card1.querySelector(".humidity")
+        temp: card1.querySelector(".temp span"),
+        wind: card1.querySelector(".wind span"),
+        humidity: card1.querySelector(".humidity span")
     },
     {
         date: card2.querySelector(".date"),
         weatherIcon: card2.querySelector(".weather-icon"),
-        temp: card2.querySelector(".temp"),
-        wind: card2.querySelector(".wind"),
-        humidity: card2.querySelector(".humidity")
+        temp: card2.querySelector(".temp span"),
+        wind: card2.querySelector(".wind span"),
+        humidity: card2.querySelector(".humidity span")
     },
     {
         date: card3.querySelector(".date"),
         weatherIcon: card3.querySelector(".weather-icon"),
-        temp: card3.querySelector(".temp"),
-        wind: card3.querySelector(".wind"),
-        humidity: card3.querySelector(".humidity")
+        temp: card3.querySelector(".temp span"),
+        wind: card3.querySelector(".wind span"),
+        humidity: card3.querySelector(".humidity span")
     },
     {
         date: card4.querySelector(".date"),
         weatherIcon: card4.querySelector(".weather-icon"),
-        temp: card4.querySelector(".temp"),
-        wind: card4.querySelector(".wind"),
-        humidity: card4.querySelector(".humidity")
+        temp: card4.querySelector(".temp span"),
+        wind: card4.querySelector(".wind span"),
+        humidity: card4.querySelector(".humidity span")
     }
 ]
 
 var searchHistory;
 loadHistory();
+
+geocode("chicago");
 
 form.addEventListener("submit", formSubmitHandler);
 citySearch.addEventListener("click", searchHistoryHandler);
@@ -68,6 +67,12 @@ function formSubmitHandler(event) {
     event.preventDefault();
     var input = cityInput.value
     geocode(input);
+}
+
+function searchHistoryHandler(event) {
+    if (event.target.matches(".city-search h3")) {
+        geocode(event.target.textContent)
+    }
 }
 
 function geocode(input) {
@@ -105,25 +110,28 @@ function addToSearchHistory(location) {
         array[i] = array[i].substring(0, 1).toUpperCase() + array[i].substring(1, array[i].length).toLowerCase();
         city += array[i] + " ";
     }
-    
-    if (!alreadyExists(city)) {
-        searchHistory.push(city);   
+    city = city.trim();
+
+    if (!inArray(city)) {
+        searchHistory.push(city);
     }
 
-    var searchHistoryContainer = document.createElement("h3");
-    searchHistoryContainer.textContent = city;
-    citySearch.appendChild(searchHistoryContainer);
-    
-    if (searchHistory.length > 2) {
+    if (!onPage(city)) {
+        var searchHistoryContainer = document.createElement("h3");
+        searchHistoryContainer.textContent = city;
+        searchHistoryContainer.className = "city-link";
+        citySearch.appendChild(searchHistoryContainer);
+    }
+
+    if (searchHistory.length > 8) {
         searchHistory.shift();
         citySearch.removeChild(citySearch.childNodes[5]);
-        
     }
 
     saveHistory();
 }
 
-function alreadyExists(city) {
+function inArray(city) {
     var isInArray = false;
     for (var i = 0; i < searchHistory.length; i++) {
         if (city === searchHistory[i]) {
@@ -133,25 +141,37 @@ function alreadyExists(city) {
     return isInArray;
 }
 
+function onPage(city) {
+    var isOnPage = false;
+    for (var i = 5; i < citySearch.childNodes.length; i++) {
+        if (city === citySearch.childNodes[i].textContent) {
+            isOnPage = true;
+        }
+    }
+    return isOnPage;
+}
+
 function displayData(location, data) {
     console.log(data)
-    weatherCards[0].date.textContent = "";
-    uvIndex = data.daily[0].uvi;
+    cityName.innerHTML = location + " " + formatDate(data.daily[0].dt);
+    var iconCode = data.daily[0].weather[0].icon;
+    weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + iconCode + "@2x.png");
 
-    weatherCards[0].uvi.textContent = uvIndex;
-    weatherCards[0].uvi.className = "";
-    addUviBackground(uvIndex);
+    temp.textContent = data.daily[0].temp.day;
+    wind.textContent = data.daily[0].wind_speed;
+    humidity.textContent = data.daily[0].humidity;
+    uvi.textContent = data.daily[0].uvi;
 
-    weatherCards[0].date.textContent = location + " ";
+    uvi.className = "";
+    addUviBackground(data.daily[0].uvi);
 
     for (var i = 0; i < weatherCards.length; i++) {
-        weatherCards[i].date.textContent = "";
-        weatherCards[i].date.append(formatDate(data.daily[i].dt));
-        var iconCode = data.daily[i].weather[0].icon;
+        weatherCards[i].date.textContent = formatDate(data.daily[i+1].dt);
+        iconCode = data.daily[i+1].weather[0].icon;
         weatherCards[i].weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + iconCode + "@2x.png");
-        weatherCards[i].temp.textContent = "Temp: " + data.daily[i].temp.day;
-        weatherCards[i].wind.textContent = "Wind: " + data.daily[i].wind_speed;
-        weatherCards[i].humidity.textContent = "Humidity: " + data.daily[i].humidity;
+        weatherCards[i].temp.textContent = data.daily[i+1].temp.day;
+        weatherCards[i].wind.textContent = data.daily[i+1].wind_speed;
+        weatherCards[i].humidity.textContent = data.daily[i+1].humidity;
     }
 }
 
@@ -167,15 +187,15 @@ function formatDate(weatherDate) {
 
 function addUviBackground(uvIndex) {
     if (uvIndex < 3) {
-        weatherCards[0].uvi.classList.add("low");
+        uvi.classList.add("low");
     } else if (uvIndex < 6) {
-        weatherCards[0].uvi.classList.add("moderate");
+        uvi.classList.add("moderate");
     } else if (uvIndex < 8) {
-        weatherCards[0].uvi.classList.add("high");
+        uvi.classList.add("high");
     } else if (uvIndex < 11) {
-        weatherCards[0].uvi.classList.add("very-high");
+        uvi.classList.add("very-high");
     } else {
-        weatherCards[0].uvi.classList.add("extreme");
+        uvi.classList.add("extreme");
     }
 }
 
