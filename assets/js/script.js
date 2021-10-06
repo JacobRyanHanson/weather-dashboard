@@ -56,7 +56,9 @@ var weatherCards = [{
 var searchHistory;
 loadHistory();
 
-geocode("chicago");
+onload = function () {
+    geocode("chicago");
+};
 
 form.addEventListener("submit", formSubmitHandler);
 citySearch.addEventListener("click", searchHistoryHandler);
@@ -164,12 +166,12 @@ function displayData(location, data) {
     addUviBackground(data.daily[0].uvi);
 
     for (var i = 0; i < weatherCards.length; i++) {
-        weatherCards[i].date.textContent = formatDate(data.daily[i+1].dt);
-        iconCode = data.daily[i+1].weather[0].icon;
+        weatherCards[i].date.textContent = formatDate(data.daily[i + 1].dt);
+        iconCode = data.daily[i + 1].weather[0].icon;
         weatherCards[i].weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + iconCode + "@2x.png");
-        weatherCards[i].temp.textContent = data.daily[i+1].temp.day;
-        weatherCards[i].wind.textContent = data.daily[i+1].wind_speed;
-        weatherCards[i].humidity.textContent = data.daily[i+1].humidity;
+        weatherCards[i].temp.textContent = data.daily[i + 1].temp.day;
+        weatherCards[i].wind.textContent = data.daily[i + 1].wind_speed;
+        weatherCards[i].humidity.textContent = data.daily[i + 1].humidity;
     }
 }
 
