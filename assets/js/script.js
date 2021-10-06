@@ -77,7 +77,7 @@ function searchHistoryHandler(event) {
 }
 
 function geocode(input) {
-    var url = "http://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=1&appid=2739206277a259e4144072cd50bda376"
+    var url = "https://api.openweathermap.org/geo/1.0/direct?q=" + input + "&limit=1&appid=2739206277a259e4144072cd50bda376"
     fetch(url).then(function (response) {
         response.json().then(function (data) {
             if (data.length > 0) {
@@ -155,7 +155,7 @@ function onPage(city) {
 function displayData(location, data) {
     cityName.innerHTML = location + " " + formatDate(data.daily[0].dt);
     var iconCode = data.daily[0].weather[0].icon;
-    weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + iconCode + "@2x.png");
+    weatherIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + iconCode + "@2x.png");
 
     temp.textContent = data.daily[0].temp.day;
     wind.textContent = data.daily[0].wind_speed;
@@ -168,7 +168,7 @@ function displayData(location, data) {
     for (var i = 0; i < weatherCards.length; i++) {
         weatherCards[i].date.textContent = formatDate(data.daily[i + 1].dt);
         iconCode = data.daily[i + 1].weather[0].icon;
-        weatherCards[i].weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + iconCode + "@2x.png");
+        weatherCards[i].weatherIcon.setAttribute("src", "https://openweathermap.org/img/wn/" + iconCode + "@2x.png");
         weatherCards[i].temp.textContent = data.daily[i + 1].temp.day;
         weatherCards[i].wind.textContent = data.daily[i + 1].wind_speed;
         weatherCards[i].humidity.textContent = data.daily[i + 1].humidity;
