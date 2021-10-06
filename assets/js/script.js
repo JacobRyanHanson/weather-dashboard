@@ -1,5 +1,3 @@
-//TODO: Flex Format Weather Cards & STYLE
-
 var citySearch = document.querySelector(".city-search");
 var form = document.querySelector(".city-form");
 var cityInput = document.querySelector(".city-input");
@@ -66,6 +64,7 @@ citySearch.addEventListener("click", searchHistoryHandler);
 function formSubmitHandler(event) {
     event.preventDefault();
     var input = cityInput.value
+    cityInput.value = "";
     geocode(input);
 }
 
@@ -152,7 +151,6 @@ function onPage(city) {
 }
 
 function displayData(location, data) {
-    console.log(data)
     cityName.innerHTML = location + " " + formatDate(data.daily[0].dt);
     var iconCode = data.daily[0].weather[0].icon;
     weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/" + iconCode + "@2x.png");

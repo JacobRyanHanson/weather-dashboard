@@ -4,6 +4,10 @@
     padding: 0;
 }
 
+body {
+    font-family: Helvetica, Arial, sans-serif;
+}
+
 header {
     display: flex;
     flex-wrap: wrap;
@@ -19,7 +23,6 @@ header h1 {
 
 main {
     display: flex;
-    height: auto;
 }
 
 main div {
@@ -29,7 +32,6 @@ main div {
 
 .city-search {
     flex-direction: column;
-    
     width: 25%;
 }
 
@@ -37,6 +39,7 @@ main div {
     width: 100%;
     font-size: 46px;
     margin: 20px;
+    font-weight: normal;
     text-align: center;
 }
 
@@ -49,13 +52,8 @@ form>* {
     width: 100%;
 }
 
-.city-link{
-    background: #b7b7b7;
-    width: 100%;
-    margin: 0 0 10px 20px;
-    padding: 5px;
-    border-radius: 5px;
-    text-align: center;
+.city-name {
+    font-size: 46px;
 }
 
 .city-input {
@@ -69,6 +67,18 @@ form>* {
     background: lightblue;
     border: none;
     border-radius: 5px;
+    font-size: larger;
+}
+
+.city-link {
+    background: #b7b7b7;
+    width: 100%;
+    margin: 0 0 10px 20px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: larger;
+    font-weight: normal;
 }
 
 .display {
@@ -82,21 +92,22 @@ form>* {
 
 .overview {
     margin: 20px;
+    padding: 10px;
     border: 1px solid black;
 }
 
 .overview p {
     width: 100%;
+    font-size: larger;
+    padding-top: 10px;
 }
 
 .overview img {
-    height: 27px;
+    height: 54px;
     border-radius: 50%;
     background: lightblue;
-}
-
-.five-day-forcast {
-    margin: 20px;
+    position: relative;
+    left: 20px;
 }
 
 .uvi span {
@@ -108,7 +119,7 @@ form>* {
 }
 
 .low {
-    background: #289500;  
+    background: #289500;
 }
 
 .moderate {
@@ -128,10 +139,50 @@ form>* {
     background: #6b49c8;
 }
 
+.five-day-forcast {
+    margin: 20px;
+    height: min-content;  
+}
+
 .five-day-forcast h3 {
+    font-weight: normal;
+}
+
+.five-day-forcast img {
+    height: 54px;
+    background: lightblue;
+    border-radius: 50%;
+    position: relative;
+    left: 5px;
+}
+
+.five-day-title {
+    font-size:x-large;
+    height: min-content;
+    margin-bottom: 20px; 
+}
+
+.weather-cards {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.weather-card {
+    width: 19%;
+    height: 257px;
+    background: #33475a;
+    color: white;
+    margin-right: 10px;
+    padding: 10px;
+    justify-content: center;
+}
+
+.weather-card p {
     width: 100%;
 }
 
-[data-id="0"] {
-    background: lightblue;
+.date {
+    font-size: larger;
+    width: 100%;
+    height: min-content;
 }
